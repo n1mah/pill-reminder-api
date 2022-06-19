@@ -9,15 +9,19 @@ class UserModel extends Model{
        $this->pdo=parent::__construct();
     }
     
-    
-    function getUsers(){
-        return [$this->pdo->query($this->select)->fetchAll(),$this->select];
-    }
-    function getUser($id){
-        $queryString="$this->select WHERE id = $id";
-        return [$this->pdo->query($queryString)->fetch(),$queryString];
+    //Get All Users
+    function getUsers($queryPlus){
+        $select= $this->select . " $queryPlus";
+        return $this->pdo->query($select)->fetchAll();
     }
 
+    //Get one User with ID
+    function getUser($id){
+        $queryString="$this->select WHERE id = $id";
+        return $this->pdo->query($queryString)->fetch();
+    }
+
+    //Add User by Data (two parameter)
     function addUser($data=[]){
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         [$firstName,$lastName] = $data;
@@ -25,28 +29,34 @@ class UserModel extends Model{
                         VALUES ('$firstName', '$lastName');";
         try {
             $this->pdo->exec($queryString);
-        echo "New record created successfully";
+        return 1;
         } catch(PDOException $e) {
-        echo $queryString . "<br>" . $e->getMessage();
+        return $e->getMessage();
       }
     }
 
+    //Update User by Data (two parameter)
     function updateUser($id,$data=[]){
          [$firstName,$lastName] = $data;
          $update="UPDATE " . UserModel::TBL . " SET";
          $queryString = "$update firstName='$firstName' , lastName='$lastName' WHERE id=$id";
+         try{
          $exec = $this->pdo->prepare($queryString);
          $exec->execute();
-         echo $exec->rowCount() . " records UPDATED successfully";
+          return $exec->rowCount();
+         } catch(PDOException $e) {
+            return $e->getMessage();
+         }
     }
 
+    //Delete one User with ID
     function deleteUser($id){
         $queryString="DELETE FROM " . UserModel::TBL . " WHERE id=$id";
         try {
             $this->pdo->exec($queryString);
             echo "Record deleted successfully";
           } catch(PDOException $e) {
-            echo $queryString . "<br>" . $e->getMessage();
+            echo $e->getMessage();
           }
        
     }
