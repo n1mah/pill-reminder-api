@@ -3,7 +3,11 @@ namespace MyApp\Model;
 class  Model{
     public function __construct() {
       require_once 'connection.php';
-      global $pdo;
+      return $pdo;
+    }
+    public function get()
+    {
+        
     }
 
 }
