@@ -2,7 +2,7 @@
 namespace MyApp\v1\Controller;
 use MyApp\Model\UserModel;
 use MyApp\Utilities\Response;
-use MyApp\Utilities\Validation;
+use MyApp\Utilities\General;
 
 class UserController{
     public $UserModel ;
@@ -13,18 +13,21 @@ class UserController{
     public function getData($data=null)
     {
         $user_id = $data['user_id'] ?? null;
-        $fields = $data['fields'] ?? '*';
         $orderby = $data['orderby'] ?? null;
         $page = $data['page'] ?? null;
         $pagesize = $data['pagesize'] ?? null;
        
-        $orderby =   Validation::checkOrderBy($orderby);
-        $limit = Validation::checkPagin($page,$pagesize);
-        $where =   Validation::checkWhere($user_id);
+        $orderby =   General::checkOrderBy($orderby);
+        $limit =   General::checkPagin($page,$pagesize);
+        $where =   General::checkWhere($user_id);
         $queryPlus = "$where $orderby $limit";
 
         $response = $this->UserModel->getUsers($queryPlus);
         return Response::respond($response,Response::HTTP_OK);
     }
-
+    public function postData($request_body)
+    {
+        $response = $this->UserModel->addUser($request_body);
+        Response::respondAndDie($response,Response::HTTP_CREATED); 
+    }
 }

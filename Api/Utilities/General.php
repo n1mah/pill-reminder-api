@@ -1,7 +1,7 @@
 <?php
 namespace MyApp\Utilities;
 
-class Validation{
+class General{
 
     public static function checkPagin($page,$pagesize)
     {
