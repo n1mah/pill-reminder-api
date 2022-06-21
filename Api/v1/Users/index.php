@@ -21,10 +21,9 @@ switch ($resquest_method){
             break;
 
         case 'POST':
-            var_dump($request_body); //Raw Send Body  //Defult Value is Null
-            var_dump($_REQUEST); //X-WWW-Form & From Data //Defult Value is array(0)
-            // $data=$UserController->postData($request_body);
-
+            //$request_body => //Raw Send Body  //Defult Value is Null
+            //$_REQUEST => //X-WWW-Form & From Data //Defult Value is array(0)
+            $data=$UserController->postData($request_body);
             break;
 
     }

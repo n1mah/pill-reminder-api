@@ -24,7 +24,8 @@ class UserModel extends Model{
     //Add User by Data (two parameter)
     function addUser($data=[]){
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        [$firstName,$lastName] = $data;
+        $firstName = $data["firstName"];
+        $lastName = $data["lastName"];
         $queryString = "INSERT INTO `users` (`firstName`, `lastName`) 
                         VALUES ('$firstName', '$lastName');";
         try {
