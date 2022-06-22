@@ -30,4 +30,22 @@ class UserController{
         $response = $this->UserModel->addUser($request_body);
         Response::respondAndDie($response,Response::HTTP_CREATED); 
     }
+
+    public function deleteData($id)
+    {
+        if(General::checkNumber($id))
+            Response::respondAndDie(['Invalid User id ..'],Response::HTTP_NOT_ACCEPTABLE);
+
+        $response = $this->UserModel->deleteUser($id);
+        if($response)
+            Response::respondAndDie($response,Response::HTTP_OK);
+        else
+            Response::respondAndDie($response,Response::HTTP_NOT_ACCEPTABLE);
+
+    }
+    public function NotAllow()
+    {
+        Response::respondAndDie(['Invalid request Method'],Response::HTTP_METHOD_NOT_ALLOWED);
+
+    }
 }

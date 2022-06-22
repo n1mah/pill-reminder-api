@@ -5,7 +5,6 @@ use MyApp\v1\Controller\UserController;
 $resquest_method = $_SERVER['REQUEST_METHOD'];
 $request_body = json_decode(file_get_contents('php://input'),true);
 $UserController = new UserController();
-echo $resquest_method;
 switch ($resquest_method){
         case 'GET':
             $user_id = $_GET['user_id'] ?? null;
@@ -25,5 +24,14 @@ switch ($resquest_method){
             //$_REQUEST => //X-WWW-Form & From Data //Defult Value is array(0)
             $data=$UserController->postData($request_body);
             break;
+
+        case 'DELETE':
+            $user_id = (int)$_GET['user_id'] ?? null;
+            $data=$UserController->deleteData($user_id);
+            echo $user_id;
+            break;
+
+            default:
+            // $data=$UserController->NotAllow();
 
     }

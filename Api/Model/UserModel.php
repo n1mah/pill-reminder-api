@@ -24,8 +24,8 @@ class UserModel extends Model{
     //Add User by Data (two parameter)
     function addUser($data=[]){
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $firstName = $data["firstName"];
-        $lastName = $data["lastName"];
+        $firstName = $data["firstName"] ?? null;
+        $lastName = $data["lastName"] ?? null;
         $queryString = "INSERT INTO `users` (`firstName`, `lastName`) 
                         VALUES ('$firstName', '$lastName');";
         try {
@@ -54,10 +54,12 @@ class UserModel extends Model{
     function deleteUser($id){
         $queryString="DELETE FROM " . UserModel::TBL . " WHERE id=$id";
         try {
-            $this->pdo->exec($queryString);
-            echo "Record deleted successfully";
+            $exec=$this->pdo->prepare($queryString); 
+            $exec->execute();
+            $row_delete=$exec->rowCount();
+            return $row_delete;
           } catch(PDOException $e) {
-            echo $e->getMessage();
+            return $e->getMessage();
           }
        
     }

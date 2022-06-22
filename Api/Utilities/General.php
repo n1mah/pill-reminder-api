@@ -3,6 +3,12 @@ namespace MyApp\Utilities;
 
 class General{
 
+    public static function checkNumber($input){
+        if(!is_numeric($input) or !is_null($input))
+            return false;
+        return true;
+    }
+
     public static function checkPagin($page,$pagesize)
     {
         $limit = '';    
