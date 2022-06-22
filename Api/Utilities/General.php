@@ -9,6 +9,16 @@ class General{
         return true;
     }
 
+
+    public static function IsNullOrEmpty($arr){
+        if(count($arr)==0)
+            return false;
+        foreach($arr as $item)
+            if(is_null($item) || empty($item))
+                return false;
+        return true;
+    }
+
     public static function checkPagin($page,$pagesize)
     {
         $limit = '';    
@@ -35,4 +45,5 @@ class General{
     }
         return $where;
     }
+
 }

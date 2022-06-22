@@ -23,7 +23,9 @@ class UserController{
         $queryPlus = "$where $orderby $limit";
 
         $response = $this->UserModel->getUsers($queryPlus);
-        return Response::respond($response,Response::HTTP_OK);
+        if(!General::IsNullOrEmpty($response))
+             Response::respondAndDie("{Message : Not Found User By Id $user_id}",Response::HTTP_NOT_FOUND);
+       Response::respondAndDie($response,Response::HTTP_OK);
     }
     public function postData($request_body)
     {
@@ -47,7 +49,9 @@ class UserController{
     public function updateData($request_body)
     {
         $id = $request_body['user_id'] ?? null;
-        $data = [$request_body['firstName'],$request_body['lastName']];
+        $data = [$request_body['firstName'] ?? null,$request_body['lastName'] ?? null];
+        if(!General::IsNullOrEmpty([$id,$data[0],$data[1]]))
+           Response::respondAndDie(['Ivalnid Data Sent ..'],Response::HTTP_NOT_ACCEPTABLE);
         if(General::checkNumber($id))
            Response::respondAndDie(['Invalid User id ..'],Response::HTTP_NOT_ACCEPTABLE);
         $row_result = $this->UserModel->updateUser($id,$data);
