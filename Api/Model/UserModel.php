@@ -30,7 +30,7 @@ class UserModel extends Model{
                         VALUES ('$firstName', '$lastName');";
         try {
             $this->pdo->exec($queryString);
-        return 1;
+        return $this->pdo->lastInsertId();
         } catch(PDOException $e) {
         return $e->getMessage();
       }

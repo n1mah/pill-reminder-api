@@ -27,8 +27,8 @@ class UserController{
     }
     public function postData($request_body)
     {
-        $response = $this->UserModel->addUser($request_body);
-        Response::respondAndDie($response,Response::HTTP_CREATED); 
+        $UserID = $this->UserModel->addUser($request_body);
+        Response::respondAndDie("{Message : User Added by Id $UserID}",Response::HTTP_CREATED); 
     }
 
     public function deleteData($id)
@@ -36,11 +36,11 @@ class UserController{
         if(General::checkNumber($id))
             Response::respondAndDie(['Invalid User id ..'],Response::HTTP_NOT_ACCEPTABLE);
 
-        $response = $this->UserModel->deleteUser($id);
-        if($response)
-            Response::respondAndDie($response,Response::HTTP_OK);
+        $row_result = $this->UserModel->deleteUser($id);
+        if($row_result)
+            Response::respondAndDie("{Message : User By Id $id Deleted}",Response::HTTP_OK);
         else
-            Response::respondAndDie($response,Response::HTTP_NOT_ACCEPTABLE);
+            Response::respondAndDie("{Message : not delete}",Response::HTTP_NOT_ACCEPTABLE);
 
     }
 
@@ -50,9 +50,12 @@ class UserController{
         $data = [$request_body['firstName'],$request_body['lastName']];
         if(General::checkNumber($id))
            Response::respondAndDie(['Invalid User id ..'],Response::HTTP_NOT_ACCEPTABLE);
-        $result = $this->UserModel->updateUser($id,$data);
-        Response::respondAndDie($result,Response::HTTP_OK);
-   
+        $row_result = $this->UserModel->updateUser($id,$data);
+        if($row_result)
+            Response::respondAndDie("{Message : User By Id $id Updated}",Response::HTTP_OK);
+         else
+            Response::respondAndDie("{Message : not Change}",Response::HTTP_NOT_ACCEPTABLE);
+
     }
     public function NotAllow()
     {
