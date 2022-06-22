@@ -43,6 +43,17 @@ class UserController{
             Response::respondAndDie($response,Response::HTTP_NOT_ACCEPTABLE);
 
     }
+
+    public function updateData($request_body)
+    {
+        $id = $request_body['user_id'] ?? null;
+        $data = [$request_body['firstName'],$request_body['lastName']];
+        if(General::checkNumber($id))
+           Response::respondAndDie(['Invalid User id ..'],Response::HTTP_NOT_ACCEPTABLE);
+        $result = $this->UserModel->updateUser($id,$data);
+        Response::respondAndDie($result,Response::HTTP_OK);
+   
+    }
     public function NotAllow()
     {
         Response::respondAndDie(['Invalid request Method'],Response::HTTP_METHOD_NOT_ALLOWED);

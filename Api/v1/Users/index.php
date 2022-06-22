@@ -25,6 +25,10 @@ switch ($resquest_method){
             $data=$UserController->postData($request_body);
             break;
 
+        case 'PUT':
+          $data=$UserController->updateData($request_body);
+          break;
+
         case 'DELETE':
             $user_id = (int)$_GET['user_id'] ?? null;
             $data=$UserController->deleteData($user_id);
