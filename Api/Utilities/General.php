@@ -37,11 +37,11 @@ class General{
         return $orderByStr;
     }
 
-    public static function checkWhere($user_id)
+    public static function checkWhere($id)
     {
     $where = '';
-    if(!is_null($user_id) and is_numeric($user_id)){
-        $where = "where id = {$user_id} ";
+    if(!is_null($id) and is_numeric($id)){
+        $where = "where id = {$id} ";
     }
         return $where;
     }

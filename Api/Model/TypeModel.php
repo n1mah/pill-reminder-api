@@ -1,33 +1,29 @@
 <?php
 namespace MyApp\Model;
 use PDO,PDOException;
-class UserModel extends Model{
+class TypeModel extends Model{
     public $pdo;
-    const TBL = "users";
-    public $select = "SELECT * FROM ".self::TBL;
+    const TBL = "types";
+    public $select = "SELECT * FROM ". self::TBL;
     function __construct() {
        $this->pdo=parent::__construct();
     }
     
-    //Get All Users
-    function getUsers($queryPlus){
+    function getTypes($queryPlus){
         $select= $this->select . " $queryPlus";
         return $this->pdo->query($select)->fetchAll();
     }
 
-    //Get one User with ID
-    function getUser($id){
+    function getType($id){
         $queryString="$this->select WHERE id = $id";
         return $this->pdo->query($queryString)->fetch();
     }
 
-    //Add User by Data (two parameter)
-    function addUser($data=[]){
+    function addType($data=[]){
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $firstName = $data["firstName"] ?? null;
-        $lastName = $data["lastName"] ?? null;
-        $queryString = "INSERT INTO `users` (`firstName`, `lastName`) 
-                        VALUES ('$firstName', '$lastName');";
+        $title = $data["title"] ?? null;
+        $queryString = "INSERT INTO `".self::TBL."` (`title`) 
+                        VALUES ('$title');";
         try {
             $this->pdo->exec($queryString);
         return $this->pdo->lastInsertId();
@@ -36,11 +32,10 @@ class UserModel extends Model{
       }
     }
 
-    //Update User by Data (two parameter)
-    function updateUser($id,$data=[]){
-         [$firstName,$lastName] = $data;
+    function updateType($id,$data=[]){
+         [$title] = $data;
          $update="UPDATE " . self::TBL . " SET";
-         $queryString = "$update firstName='$firstName' , lastName='$lastName' WHERE id=$id";
+         $queryString = "$update title='$title' WHERE id=$id";
          try{
          $exec = $this->pdo->prepare($queryString);
          $exec->execute();
@@ -50,8 +45,7 @@ class UserModel extends Model{
          }
     }
 
-    //Delete one User with ID
-    function deleteUser($id){
+    function deleteType($id){
         $queryString="DELETE FROM " . self::TBL . " WHERE id=$id";
         try {
             $exec=$this->pdo->prepare($queryString); 
